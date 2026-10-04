@@ -1,0 +1,399 @@
+/* ═══════════════════════════════════════════════════════════════════
+   DIARY · a sibling of Temenos and Miscellany
+   Same inks and typefaces as the garden. Locked, it is only the name,
+   one italic line and a password line, centred on the page. Opened,
+   it is a day book like Miscellany: entries newest first, under their days.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@font-face { font-family: "Spectral"; src: url("fonts/spectral-latin-400-normal.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: "Spectral"; src: url("fonts/spectral-latin-400-italic.woff2") format("woff2"); font-style: italic; font-weight: 400; font-display: swap; }
+@font-face { font-family: "Spectral"; src: url("fonts/spectral-latin-700-normal.woff2") format("woff2"); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: "Spectral"; src: url("fonts/spectral-latin-700-italic.woff2") format("woff2"); font-style: italic; font-weight: 700; font-display: swap; }
+@font-face { font-family: "STIX Two Text"; src: url("fonts/stix-two-text-latin-600-normal.woff2") format("woff2"); font-style: normal; font-weight: 600; font-display: swap; }
+
+:root {
+  --accent: #5c2229;          /* oxblood, as in the garden */
+  --accent-dark: #43161b;
+  --accent-line: rgba(92, 34, 41, 0.3);
+  --ink: #4a4a4a;             /* body text */
+  --quiet: #767676;           /* dates, captions */
+  --hairline: #e4e4e4;
+  --wash: #f6f5f4;            /* code, highlights */
+
+  --spectral: "Spectral", Georgia, serif;
+  --caps: "STIX Two Text", "Times New Roman", Times, serif;
+  --serif: "Times New Roman", Times, serif;
+
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--spectral);
+  font-size: 13px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection { background: #efefef; color: #111; }
+
+main, .masthead, footer {
+  width: 100%;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* ── The name, like the garden's: spaced capitals, a comma, a hairline ── */
+.masthead { padding-top: 4.5rem; padding-bottom: 3.25rem; }
+
+.name {
+  margin: 0;
+  font: 600 1.2rem/1 var(--caps);
+  letter-spacing: 0.155em;
+  text-transform: uppercase;
+}
+
+.name a {
+  display: flex;
+  align-items: center;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.name a::before { content: ","; order: 1; letter-spacing: 0; }
+.name a::after { content: ""; order: 2; flex: 1; min-width: 2em; margin-left: 0.35em; border-top: 1px solid #d6d6d6; }
+
+.subtitle {
+  margin: 0.55rem 0 0;
+  font: italic 0.9rem/1.4 var(--spectral);
+  color: var(--quiet);
+}
+
+.subtitle a {
+  font: 600 0.72rem var(--caps);
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── The row of links beneath the subtitle, centred, in the garden menu's
+   voice: lowercase grey Spectral with an italic first letter and a pale
+   underline; the site you're on in oxblood bold ── */
+.sites {
+  margin: 0.8rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  row-gap: 0.4rem;
+}
+.sites a {
+  font: 400 0.84rem/1.35 var(--spectral);
+  text-transform: lowercase;
+  color: var(--quiet);
+  border-bottom: none;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--hairline);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+.sites a::first-letter { font-style: italic; }
+.sites a:hover { color: var(--accent); text-decoration-color: var(--accent-line); }
+.sites a[aria-current=page] { color: var(--accent); font-weight: 700; text-decoration-color: var(--accent-line); }
+.sites .sep { margin: 0 0.6em; color: #d8d8d8; font: 0.84rem var(--spectral); }
+
+/* ── Links ── */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-line);
+  padding-bottom: 1px;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+a:hover { color: var(--accent-dark); border-bottom-color: var(--accent); }
+
+/* ── A day: its name like the masthead, small; a hairline running right ── */
+.day { margin: 0 0 3.25rem; }
+
+.dayname {
+  display: flex;
+  align-items: center;
+  margin: 0 0 1rem;
+  font: 600 0.72rem/1 var(--caps);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.dayname .date { color: var(--quiet); margin-left: 0.6em; }
+.dayname::after { content: ""; flex: 1; min-width: 2em; margin-left: 0.8em; border-top: 1px solid var(--hairline); }
+
+/* ── A note ── */
+.post { padding: 0 0 1.5rem; }
+
+/* its time beneath it, a link to the note on its own */
+.when {
+  display: table;                   /* on its own line, but only as wide as the time */
+  margin: 0.75rem 0 0;
+  font: italic 0.75rem/1 var(--spectral);
+  color: #9a9a9a;
+  border-bottom: none;
+}
+/* as a link: a faint grey line beneath, deepening to oxblood on hover */
+a.when { padding-bottom: 1px; border-bottom: 1px solid #dcdcdc; }
+a.when:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+.body > :first-child { margin-top: 0; }
+.body > :last-child { margin-bottom: 0; }
+.body p { margin: 0 0 0.8em; }
+
+/* justified, with hyphenation so the spacing stays even */
+.body p, .body li { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+
+/* links inside notes set like ABYSSATA beneath the name: small spaced capitals */
+.body a {
+  font: 600 0.8em var(--caps);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.body strong, .body b { color: var(--accent); }
+.body em { font-style: italic; }
+.body mark { background: var(--wash); color: inherit; padding: 0 0.15em; }
+
+.tag {
+  font-size: 0.85em;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+/* headings inside a note, kept small: this is a diary, not an essay */
+.body h1, .body h2, .body h3, .body h4, .body h5, .body h6 {
+  margin: 1.2em 0 0.4em;
+  font: 600 0.74rem/1.3 var(--caps);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.body ul, .body ol { margin: 0 0 0.8em; padding-left: 1.2em; }
+.body li { margin: 0.15em 0; }
+.body li::marker { color: var(--quiet); }
+
+.body blockquote {
+  margin: 0.2em 0 0.9em;
+  padding: 0.05em 0 0.05em 1rem;
+  border-left: 1px solid var(--hairline);
+  font-size: 12.6px;                /* fixed, so it stays put if the body size changes */
+  font-style: italic;
+  color: #666;
+}
+.body blockquote p { margin: 0 0 0.4em; text-align: left; }
+.body blockquote p:last-child { margin-bottom: 0; }
+
+/* images sit plainly in the column, unframed */
+.body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.35em 0 0.9em;
+}
+
+.body code {
+  font-size: 0.85em;
+  background: var(--wash);
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  padding: 0.05em 0.3em;
+}
+.body pre {
+  overflow-x: auto;
+  background: var(--wash);
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  padding: 0.7em 0.9em;
+  line-height: 1.5;
+}
+.body pre code { background: none; border: 0; padding: 0; }
+
+.body hr { border: 0; border-top: 1px solid var(--hairline); margin: 1.2em 0; }
+
+.empty, .back {
+  font-style: italic;
+  color: var(--quiet);
+  padding: 1.5rem 0;
+}
+.back { padding-top: 1rem; }
+
+/* "All entries" set like ABYSSATA beneath the name */
+.back a, .empty a {
+  font: 600 0.72rem var(--caps);
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* an entry on its own page: ALL ENTRIES just beneath it */
+.single .day { margin-bottom: 0; }
+.single .back { padding: 0.75rem 0 0; }
+
+/* ── The foot: search on the left, older and newer on the right ── */
+footer {
+  padding-top: 1.5rem;
+  padding-bottom: 3.5rem;
+}
+.foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+/* the search line, as in the garden: an italic "search", a single line beneath */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 12rem;
+  max-width: 60%;
+  padding: 0 0 0.1rem;
+  border-bottom: 1px solid #d0d0d0;
+  transition: border-color 0.15s ease;
+}
+.search:hover, .search:focus-within { border-bottom-color: #444; }
+.search input {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  font: italic 0.9rem/1.15 var(--spectral);
+  color: var(--ink);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search input::placeholder { color: var(--quiet); opacity: 1; }
+.search input::-webkit-search-cancel-button { display: none; }
+.search svg { width: 13px; height: 13px; flex: none; }
+.search svg path { stroke: var(--quiet); }
+
+/* NEWER and OLDER, set like ABYSSATA */
+.pager { display: flex; gap: 1.1rem; white-space: nowrap; }
+.pager a {
+  font: 600 0.72rem var(--caps);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* search results */
+.found { margin: 0 0 1.4rem; font: italic 0.85rem/1.4 var(--spectral); color: var(--quiet); }
+.body mark.hit { background: #f1e7e8; padding: 0; }
+
+/* ═══ The lock ═══════════════════════════════════════════════════════ */
+
+/* until opened: only the masthead, centred on the page; no links elsewhere */
+body.locked { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; }
+body.locked .masthead { width: 100%; max-width: 24rem; padding-top: 0; padding-bottom: 12vh; }
+body.locked .sites { display: none; }
+body.open .gate { display: none; }
+/* while a kept key is tried, show nothing rather than the lock flickering past */
+body.locked:not(.ready) .gate { visibility: hidden; }
+
+.gate { margin-top: 2.2rem; }
+.gate .row { display: flex; align-items: flex-end; gap: 1.2rem; }
+
+/* the password: a single line, as the search line is */
+.field {
+  flex: 1;
+  display: block;
+  padding: 0 0 0.1rem;
+  border-bottom: 1px solid #d0d0d0;
+  transition: border-color 0.15s ease;
+}
+.field:hover, .field:focus-within { border-bottom-color: #444; }
+.field input {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  font: italic 0.95rem/1.4 var(--spectral);
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field input::placeholder { color: var(--quiet); letter-spacing: 0; opacity: 1; }
+.field input::selection { background: #efefef; color: #111; }
+
+/* ENTER, set like ABYSSATA */
+.enter {
+  flex: none;
+  margin: 0;
+  padding: 0 0 1px;
+  border: 0;
+  border-bottom: 1px solid var(--accent-line);
+  background: none;
+  cursor: pointer;
+  font: 600 0.72rem/1.4 var(--caps);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.enter:hover, .enter:focus-visible { color: var(--accent-dark); border-bottom-color: var(--accent); outline: 0; }
+.trying .enter { color: var(--quiet); border-bottom-color: #dcdcdc; cursor: progress; }
+
+/* a wrong word: a small shake, and a grey italic line */
+.wrong {
+  min-height: 1.4em;
+  margin: 0.9rem 0 0;
+  font: italic 0.85rem/1.4 var(--spectral);
+  color: var(--quiet);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.failed .wrong, .wrong.shown { opacity: 1; }
+.shake .row { animation: shake 0.42s ease; }
+@keyframes shake {
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+@media (prefers-reduced-motion: reduce) { .shake .row { animation: none; } }
+
+/* for password managers only */
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; padding: 0; }
+
+/* opened: the entries come up softly */
+body.open main, body.open footer { animation: rise 0.5s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } }
+
+/* the circumpunct at the foot, its dot in place while open; press to lock */
+.seal { margin: 2.75rem 0 0; text-align: center; }
+.seal button { padding: 0.3rem; border: 0; background: none; cursor: pointer; line-height: 0; }
+.seal svg { width: 14px; height: 14px; }
+.seal circle { stroke: #b9a3a5; transition: stroke 0.2s ease, fill 0.2s ease; }
+.seal .dot { fill: #b9a3a5; stroke: none; transform-origin: 50px 50px; transition: transform 0.25s ease, fill 0.2s ease; }
+.seal button:hover circle, .seal button:focus-visible circle { stroke: var(--accent); }
+.seal button:hover .dot, .seal button:focus-visible .dot { fill: var(--accent); transform: scale(0); }
+.seal button:focus-visible { outline: 0; }
+
+@media (max-width: 600px) {
+  .masthead { padding-top: 2.5rem; padding-bottom: 2.25rem; }
+  body.locked .masthead { padding-bottom: 8vh; }
+}
